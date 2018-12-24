@@ -2,20 +2,28 @@
 #include <unistd.h>
 #include <string.h>
 
-
-const char SOF=0x01;
-const char ETX=0x03;
-const char EOT=0x04;
-const char ACK=0x07;
-const char NACK=0x18;
-
 /** Simple ASCII file transmission
  * Intended for use over a reliable connection
  *
  * Protocol:
  * 1a. Client initiates send, wait for SOF
- * 1b.
+ * 1b. Server sends SOF
+ * 2a. Client sends local filename followed by \n
+ * 2b. Server attempts to open filename sent by Client
+ * 3a. Client waits for ACK/NACK
+ * 3b. Server sends ACK if file open successful, NACK otherwise
+ * 4a. Client begins sending file contents, line by line
+ * 4b. Server receives and writes file contents into new filename
+ * 5a. Client sends EOT when done sending file contents
+ * 5b. Server closes file and terminates when EOT received.
  */
+
+ const char SOF=0x01;
+ const char ETX=0x03;
+ const char EOT=0x04;
+ const char ACK=0x07;
+ const char NACK=0x18;
+
 int main() {
   FILE *fp;
   char file[1024];
