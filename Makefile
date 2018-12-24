@@ -4,6 +4,7 @@ CXX ?= g++
 SRC_PATH = .
 BUILD_PATH = .
 BIN_PATH = .
+INSTALL_PATH = /usr/local/bin
 
 # executable #
 BIN_NAME = axfer
@@ -18,9 +19,14 @@ LIBS =
 .PHONY: all
 all: $(BIN_NAME)
 
+.PHONY: install
+install: $(BIN_NAME)
+	@echo "Installing $(BIN_NAME) to $(INSTALL_PATH)"
+	@cp $(BIN_NAME) $(INSTALL_PATH)
+
 .PHONY: clean
 clean:
-	@$(RM) $(BIN_NAME) $(OBJECTS)
+	$(RM) $(BIN_NAME) $(OBJECTS)
 
 # Creation of the executable
 $(BIN_NAME): $(OBJECTS)
